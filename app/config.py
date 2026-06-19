@@ -13,6 +13,8 @@ class Settings(BaseSettings):
 
     # App
     app_name: str = "Saarthi Lead Follow-up"
+    # Dealership display name used in outbound message templates.
+    dealership_name: str = "Tata Motors Hyderabad"
     environment: str = "development"
     log_level: str = "INFO"
     # IANA timezone used for cadence scheduling / quiet hours.

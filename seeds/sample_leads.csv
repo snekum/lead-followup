@@ -1,0 +1,11 @@
+name,phone,model,visit_date,language,budget,notes
+Ravi Teja,+91 98765 43210,Nexon,2026-06-15,telugu,10-12 lakh,Interested in top variant
+Priya Sharma,9701234567,Punch,16/06/2026,hindi,7-9 lakh,Asked about EMI options
+Sai Krishna,098492 33445,Harrier,2026-06-14,telugu,,Prefers diesel
+Anjali Reddy,+919966554433,Tiago,17/06/2026,english,,Compact car for city use
+Mohammed Imran,9701234567,Punch,16/06/2026,hindi,,Same phone as Priya (duplicate)
+Lakshmi Devi,9000011122,Curvv,2026-06-18,telugu,15-18 lakh,Curious about EV range
+Vikram Rao,12345,Safari,2026-06-12,english,,Invalid phone (bad data)
+Arjun Nair,+91 90030 40050,Altroz,18/06/2026,english,8-10 lakh,
+Fatima Begum,8801234567,Nexon EV,2026-06-19,hindi,,Asked about home charging
+,9100000000,Tiago,2026-06-19,english,,Missing name (bad data)

@@ -35,3 +35,6 @@ migrate:      ## Apply migrations
 
 revision:     ## Autogenerate a migration: make revision m="add leads"
 	alembic revision --autogenerate -m "$(m)"
+
+seed:         ## Seed locations, staff, and sample leads (run after migrate)
+	python -m app.seed

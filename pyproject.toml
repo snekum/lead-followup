@@ -18,6 +18,8 @@ dependencies = [
     "celery>=5.3",
     "redis>=5.0",
     "jinja2>=3.1",
+    "openpyxl>=3.1",
+    "python-multipart>=0.0.9",
 ]
 
 [project.optional-dependencies]

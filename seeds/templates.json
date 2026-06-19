@@ -1,0 +1,26 @@
+{
+  "day0_thankyou": {
+    "step_day": 0,
+    "en": "Hi {name}! Thanks for visiting {dealership} today and checking out the Tata {model}. I'm here if you have any questions. Would you like to book a test drive? 🚗",
+    "hi": "नमस्ते {name}! आज {dealership} आने और Tata {model} देखने के लिए धन्यवाद। किसी भी सवाल के लिए मैं हाज़िर हूँ। क्या आप टेस्ट ड्राइव बुक करना चाहेंगे? 🚗",
+    "te": "నమస్కారం {name}! ఈ రోజు {dealership} ని సందర్శించి Tata {model} చూసినందుకు ధన్యవాదాలు. ఏవైనా సందేహాలుంటే నేను ఇక్కడ ఉన్నాను. టెస్ట్ డ్రైవ్ బుక్ చేసుకుంటారా? 🚗"
+  },
+  "day2_modelinfo": {
+    "step_day": 2,
+    "en": "Hi {name}, hope you're doing well! The Tata {model} is a favourite for its safety and features. Can I share more details or help you compare variants?",
+    "hi": "नमस्ते {name}, आशा है आप अच्छे होंगे! Tata {model} अपनी सुरक्षा और फीचर्स के लिए काफ़ी पसंद की जाती है। क्या मैं और जानकारी भेजूँ या वेरिएंट की तुलना में मदद करूँ?",
+    "te": "నమస్కారం {name}, మీరు బాగున్నారని ఆశిస్తున్నాను! Tata {model} దాని భద్రత, ఫీచర్ల కోసం చాలా మందికి ఇష్టం. మరిన్ని వివరాలు పంపమంటారా లేదా వేరియంట్లను పోల్చడంలో సహాయం చేయమంటారా?"
+  },
+  "day5_testdrive": {
+    "step_day": 5,
+    "en": "Hi {name}, a test drive is the best way to experience the Tata {model}. We have slots this week at {dealership} — shall I arrange one at a time that suits you?",
+    "hi": "नमस्ते {name}, Tata {model} का अनुभव लेने का सबसे अच्छा तरीका है टेस्ट ड्राइव। इस हफ़्ते {dealership} में स्लॉट उपलब्ध हैं — क्या मैं आपके लिए एक टेस्ट ड्राइव तय कर दूँ?",
+    "te": "నమస్కారం {name}, Tata {model} ని అనుభవించడానికి టెస్ట్ డ్రైవ్ ఉత్తమ మార్గం. ఈ వారం {dealership} లో స్లాట్‌లు అందుబాటులో ఉన్నాయి — మీకు అనుకూలమైన సమయంలో ఒకటి ఏర్పాటు చేయమంటారా?"
+  },
+  "day9_final": {
+    "step_day": 9,
+    "en": "Hi {name}, just checking in one last time about the Tata {model}. If you're still interested, I'd be glad to help with a test drive or any questions. Reply STOP to opt out anytime.",
+    "hi": "नमस्ते {name}, Tata {model} के बारे में आख़िरी बार संपर्क कर रहा हूँ। अगर आप अभी भी इच्छुक हैं, तो मैं टेस्ट ड्राइव या किसी भी सवाल में मदद करके ख़ुश रहूँगा। रोकने के लिए कभी भी STOP लिखें।",
+    "te": "నమస్కారం {name}, Tata {model} గురించి చివరిసారి సంప్రదిస్తున్నాను. మీకు ఇంకా ఆసక్తి ఉంటే, టెస్ట్ డ్రైవ్ లేదా ఏ ప్రశ్నలకైనా సహాయం చేయడానికి సిద్ధం. ఆపడానికి ఎప్పుడైనా STOP అని రిప్లై చేయండి."
+  }
+}
