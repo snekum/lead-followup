@@ -38,3 +38,29 @@ class LeadStatus(StrEnum):
     LOST = "lost"
     OPTED_OUT = "opted_out"
     UNREACHABLE = "unreachable"
+
+
+class TouchStatus(StrEnum):
+    PENDING = "pending"
+    SENT = "sent"
+    CANCELLED = "cancelled"
+    SKIPPED = "skipped"
+    FAILED = "failed"
+
+
+class MessageDirection(StrEnum):
+    INBOUND = "inbound"
+    OUTBOUND = "outbound"
+
+
+class MessageKind(StrEnum):
+    TEMPLATE = "template"
+    TEXT = "text"
+
+
+class MessageStatus(StrEnum):
+    QUEUED = "queued"
+    SENT = "sent"
+    DELIVERED = "delivered"
+    READ = "read"
+    FAILED = "failed"

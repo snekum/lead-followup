@@ -16,7 +16,11 @@ from app.domain.enums import (
     LeadSource,
     LeadStatus,
     LocationType,
+    MessageDirection,
+    MessageKind,
+    MessageStatus,
     StaffRole,
+    TouchStatus,
 )
 
 
@@ -126,3 +130,51 @@ class Event(Base):
     )
 
     lead: Mapped[Lead] = relationship(back_populates="events")
+
+
+class Message(Base):
+    """Every WhatsApp message in or out (the audit trail)."""
+
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    lead_id: Mapped[int] = mapped_column(sa.ForeignKey("leads.id"))
+    direction: Mapped[MessageDirection] = mapped_column(_enum(MessageDirection))
+    kind: Mapped[MessageKind] = mapped_column(_enum(MessageKind))
+    template_name: Mapped[str | None] = mapped_column(sa.String(80))
+    body: Mapped[str | None] = mapped_column(sa.Text)
+    status: Mapped[MessageStatus] = mapped_column(
+        _enum(MessageStatus), default=MessageStatus.QUEUED
+    )
+    provider_message_id: Mapped[str | None] = mapped_column(sa.String(128), index=True)
+    error: Mapped[str | None] = mapped_column(sa.Text)
+    # Cadence step that produced this outbound message, if any.
+    step_key: Mapped[str | None] = mapped_column(sa.String(40))
+    sent_at: Mapped[dt.datetime | None] = mapped_column(sa.DateTime(timezone=True))
+    created_at: Mapped[dt.datetime] = mapped_column(
+        sa.DateTime(timezone=True), server_default=_now()
+    )
+
+    lead: Mapped[Lead] = relationship()
+
+
+class ScheduledTouch(Base):
+    """A planned outbound nudge for a lead (one row per cadence step)."""
+
+    __tablename__ = "scheduled_touches"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    lead_id: Mapped[int] = mapped_column(sa.ForeignKey("leads.id"))
+    step_key: Mapped[str] = mapped_column(sa.String(40))
+    scheduled_for: Mapped[dt.datetime] = mapped_column(
+        sa.DateTime(timezone=True), index=True
+    )
+    status: Mapped[TouchStatus] = mapped_column(
+        _enum(TouchStatus), default=TouchStatus.PENDING, index=True
+    )
+    message_id: Mapped[int | None] = mapped_column(sa.ForeignKey("messages.id"))
+    created_at: Mapped[dt.datetime] = mapped_column(
+        sa.DateTime(timezone=True), server_default=_now()
+    )
+
+    lead: Mapped[Lead] = relationship()

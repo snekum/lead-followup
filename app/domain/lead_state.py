@@ -11,7 +11,7 @@ _S = LeadStatus
 
 # from-status -> set of allowed next statuses
 TRANSITIONS: dict[LeadStatus, set[LeadStatus]] = {
-    _S.NEW: {_S.CONTACTED, _S.UNREACHABLE, _S.OPTED_OUT},
+    _S.NEW: {_S.CONTACTED, _S.ENGAGED, _S.UNREACHABLE, _S.OPTED_OUT},
     _S.CONTACTED: {_S.ENGAGED, _S.UNREACHABLE, _S.OPTED_OUT, _S.LOST},
     _S.ENGAGED: {
         _S.TEST_DRIVE_REQUESTED,

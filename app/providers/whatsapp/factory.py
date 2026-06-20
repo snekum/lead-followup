@@ -17,5 +17,7 @@ def get_whatsapp_provider() -> WhatsAppProvider:
             _mock_singleton = MockWhatsAppProvider()
         return _mock_singleton
     if provider == "meta":
-        raise NotImplementedError("Meta Cloud API provider is added in M2.")
+        from app.providers.whatsapp.meta import MetaCloudProvider
+
+        return MetaCloudProvider()
     raise ValueError(f"Unknown WHATSAPP_PROVIDER: {provider!r}")

@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 
 from app.db.models import Event, Lead
 from app.domain.enums import Language, LeadSource
+from app.services.cadence import schedule_cadence
 from app.services.phone import PhoneError, normalize_phone
 
 # Accepted header -> canonical field. Headers are lower-cased + underscored.
@@ -196,6 +197,7 @@ def import_leads(
         session.add(
             Event(lead_id=lead.id, type="lead_imported", data={"source": source.value})
         )
+        schedule_cadence(session, lead)
         result.imported += 1
 
     session.commit()

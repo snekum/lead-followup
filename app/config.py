@@ -24,9 +24,18 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg2://saarthi:saarthi@localhost:5432/saarthi"
     redis_url: str = "redis://localhost:6379/0"
 
-    # WhatsApp provider: "mock" (offline) | "meta" (Cloud API, added in M2)
+    # WhatsApp provider: "mock" (offline) | "meta" (Cloud API)
     whatsapp_provider: str = "mock"
 
+    # Meta WhatsApp Cloud API (used when whatsapp_provider == "meta")
+    meta_access_token: str = ""
+    meta_phone_number_id: str = ""
+    meta_api_version: str = "v21.0"
+    meta_verify_token: str = "saarthi-verify"
+    meta_app_secret: str = ""
+
+    # Cadence
+    cadence_enabled: bool = True
     # Cadence quiet hours (local hour, 24h). No outbound sends in [start, end).
     quiet_hours_start: int = 21
     quiet_hours_end: int = 9

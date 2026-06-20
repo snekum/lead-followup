@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 
-from app.api import health, leads
+from app.api import health, leads, webhook
 from app.config import get_settings
 from app.logging_config import configure_logging
 
@@ -15,6 +15,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title=settings.app_name, version="0.0.1")
     app.include_router(health.router)
     app.include_router(leads.router)
+    app.include_router(webhook.router)
     return app
 
 

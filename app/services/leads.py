@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.db.models import Event, Lead
 from app.domain.enums import Language, LeadSource, LeadStatus
 from app.domain.lead_state import assert_transition
+from app.services.cadence import schedule_cadence
 from app.services.phone import normalize_phone
 
 
@@ -49,6 +50,7 @@ def create_lead(
     session.add(
         Event(lead_id=lead.id, type="lead_created", data={"source": source.value})
     )
+    schedule_cadence(session, lead)
     session.commit()
     session.refresh(lead)
     return lead
