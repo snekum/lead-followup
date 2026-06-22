@@ -10,8 +10,13 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse, PlainTextResponse, Response
 from sqlalchemy.orm import Session
 
+from app.assistant.agent import respond_to_inbound
 from app.config import get_settings
 from app.db.session import get_db
+from app.providers.llm.base import LLMClient
+from app.providers.llm.factory import get_llm_client
+from app.providers.whatsapp.base import WhatsAppProvider
+from app.providers.whatsapp.factory import get_whatsapp_provider
 from app.services.inbound import handle_inbound
 from app.services.messages import update_message_status
 
@@ -40,7 +45,12 @@ def _signature_ok(secret: str, raw: bytes, header: str | None) -> bool:
 
 
 @router.post("/whatsapp")
-async def receive(request: Request, db: Annotated[Session, Depends(get_db)]) -> Response:
+async def receive(
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+    whatsapp: Annotated[WhatsAppProvider, Depends(get_whatsapp_provider)],
+    llm: Annotated[LLMClient, Depends(get_llm_client)],
+) -> Response:
     raw = await request.body()
     settings = get_settings()
     if not _signature_ok(
@@ -63,11 +73,17 @@ async def receive(request: Request, db: Annotated[Session, Depends(get_db)]) -> 
                     body = message.get("text", {}).get("body", "")
                 else:
                     body = f"[{message.get('type', 'unknown')}]"
-                handle_inbound(
+                lead = handle_inbound(
                     db,
                     phone=message.get("from", ""),
                     text=body,
                     provider_message_id=message.get("id"),
                 )
+                if (
+                    lead is not None
+                    and not lead.opt_out
+                    and get_settings().assistant_enabled
+                ):
+                    respond_to_inbound(db, lead, whatsapp=whatsapp, llm=llm)
             db.commit()
     return JSONResponse({"status": "received"})

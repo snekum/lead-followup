@@ -158,6 +158,22 @@ class Message(Base):
     lead: Mapped[Lead] = relationship()
 
 
+class Feedback(Base):
+    """Visit feedback captured by the assistant."""
+
+    __tablename__ = "feedback"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    lead_id: Mapped[int] = mapped_column(sa.ForeignKey("leads.id"))
+    text: Mapped[str] = mapped_column(sa.Text)
+    sentiment: Mapped[str | None] = mapped_column(sa.String(20))
+    created_at: Mapped[dt.datetime] = mapped_column(
+        sa.DateTime(timezone=True), server_default=_now()
+    )
+
+    lead: Mapped[Lead] = relationship()
+
+
 class ScheduledTouch(Base):
     """A planned outbound nudge for a lead (one row per cadence step)."""
 

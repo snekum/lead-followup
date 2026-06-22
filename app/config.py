@@ -34,6 +34,15 @@ class Settings(BaseSettings):
     meta_verify_token: str = "saarthi-verify"
     meta_app_secret: str = ""
 
+    # Assistant / LLM
+    # llm_provider: "claude" (real API) | "fake" (offline, for tests/demos)
+    llm_provider: str = "claude"
+    anthropic_api_key: str = ""
+    anthropic_model: str = "claude-haiku-4-5"  # cheap; swap to claude-opus-4-8 anytime
+    assistant_enabled: bool = True
+    assistant_max_tokens: int = 512
+    assistant_max_turns: int = 4
+
     # Cadence
     cadence_enabled: bool = True
     # Cadence quiet hours (local hour, 24h). No outbound sends in [start, end).

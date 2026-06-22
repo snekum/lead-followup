@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.db.models import Event, Lead
 from app.domain.enums import Language, LeadSource, LeadStatus
-from app.domain.lead_state import assert_transition
+from app.domain.lead_state import InvalidTransition, assert_transition
 from app.services.cadence import schedule_cadence
 from app.services.phone import normalize_phone
 
@@ -56,14 +56,10 @@ def create_lead(
     return lead
 
 
-def change_status(
-    session: Session,
-    lead: Lead,
-    to: LeadStatus,
-    *,
-    reason: str | None = None,
-) -> Lead:
-    """Apply a guarded lifecycle transition and record it as an event."""
+def set_status(
+    session: Session, lead: Lead, to: LeadStatus, *, reason: str | None = None
+) -> None:
+    """Apply a guarded transition and record an event, WITHOUT committing."""
     assert_transition(lead.status, to)
     previous = lead.status
     lead.status = to
@@ -74,6 +70,24 @@ def change_status(
             data={"from": previous.value, "to": to.value, "reason": reason},
         )
     )
+
+
+def try_set_status(
+    session: Session, lead: Lead, to: LeadStatus, *, reason: str | None = None
+) -> bool:
+    """Like set_status, but returns False instead of raising on an invalid transition."""
+    try:
+        set_status(session, lead, to, reason=reason)
+        return True
+    except InvalidTransition:
+        return False
+
+
+def change_status(
+    session: Session, lead: Lead, to: LeadStatus, *, reason: str | None = None
+) -> Lead:
+    """Apply a guarded lifecycle transition and commit."""
+    set_status(session, lead, to, reason=reason)
     session.commit()
     session.refresh(lead)
     return lead
