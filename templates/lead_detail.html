@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% set lead = d.lead %}
+{% block title %}{{ lead.name }} · Saarthi{% endblock %}
+{% block content %}
+<p><a href="/dashboard">← Overview</a></p>
+<h1>{{ lead.name }}
+  <span class="badge s-{{ lead.status.value }}">{{ lead.status.value.replace('_', ' ') }}</span>
+</h1>
+
+<div class="panel">
+  <div><strong>Phone:</strong> {{ lead.phone }}</div>
+  <div><strong>Interested in:</strong> {{ lead.interested_model or "—" }}</div>
+  <div><strong>Language:</strong> {{ lead.preferred_language.value }}
+       &nbsp;·&nbsp; <strong>Source:</strong> {{ lead.source.value }}
+       &nbsp;·&nbsp; <strong>Visited:</strong> {{ lead.visit_date or "—" }}</div>
+  {% if lead.budget %}<div><strong>Budget:</strong> {{ lead.budget }}</div>{% endif %}
+
+  {% if lead.open_question %}
+  <div class="alert">
+    <strong>Open question:</strong> {{ lead.open_question }}
+    <form class="inline" method="post" action="/dashboard/leads/{{ lead.id }}/resolve">
+      <button class="btn" type="submit">Mark resolved</button>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="row-actions">
+    {% for target in ["contacted", "handed_off", "won", "lost"] %}
+    <form class="inline" method="post" action="/dashboard/leads/{{ lead.id }}/status">
+      <input type="hidden" name="to" value="{{ target }}">
+      <button class="btn {{ 'primary' if target == 'won' }}" type="submit">Mark {{ target.replace('_', ' ') }}</button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+
+<h2>Conversation</h2>
+<div class="panel chat">
+  {% for m in d.messages %}
+  <div class="bubble {{ 'in' if m.direction.value == 'inbound' else 'out' }}">
+    {{ m.body }}
+    <div class="meta">
+      {{ m.kind.value }}{% if m.template_name %} · {{ m.template_name }}{% endif %}
+      · {{ m.status.value }} · {{ m.created_at.strftime('%d %b %H:%M') if m.created_at else "" }}
+    </div>
+  </div>
+  {% else %}
+  <p class="muted">No messages yet.</p>
+  {% endfor %}
+</div>
+
+{% if d.feedback %}
+<h2>Feedback</h2>
+<div class="panel">
+  {% for f in d.feedback %}
+  <p>“{{ f.text }}” {% if f.sentiment %}<span class="badge s-engaged">{{ f.sentiment }}</span>{% endif %}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+<h2>Activity</h2>
+<div class="panel">
+  {% for e in d.events %}
+  <div class="muted">{{ e.created_at.strftime('%d %b %H:%M') if e.created_at else "" }} — {{ e.type.replace('_', ' ') }}</div>
+  {% else %}
+  <p class="muted">No activity yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

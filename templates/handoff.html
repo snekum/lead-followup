@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Needs human · Saarthi{% endblock %}
+{% block content %}
+<h1>Needs human ({{ leads|length }})</h1>
+<p class="muted">Leads the assistant escalated — answer their open question, then mark the outcome.</p>
+{% if leads %}
+<table>
+  <tr><th>Lead</th><th>Model</th><th>Open question</th><th>Updated</th><th></th></tr>
+  {% for lead in leads %}
+  <tr>
+    <td><a href="/dashboard/leads/{{ lead.id }}">{{ lead.name }}</a><br><span class="muted">{{ lead.phone }}</span></td>
+    <td>{{ lead.interested_model or "—" }}</td>
+    <td>{{ lead.open_question or "—" }}</td>
+    <td class="muted">{{ lead.updated_at.strftime('%d %b %H:%M') if lead.updated_at else "—" }}</td>
+    <td><a href="/dashboard/leads/{{ lead.id }}">Open →</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class="muted">The queue is empty. 🎉</p>
+{% endif %}
+{% endblock %}

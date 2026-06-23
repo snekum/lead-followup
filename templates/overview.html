@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Overview · Saarthi{% endblock %}
+{% block content %}
+<h1>Lead follow-up overview</h1>
+
+<div class="cards">
+  <div class="card"><div class="num">{{ metrics.total }}</div><div class="lbl">Total leads</div></div>
+  <div class="card"><div class="num">{{ metrics.contacted }}</div><div class="lbl">Contacted</div></div>
+  <div class="card"><div class="num">{{ metrics.engaged }}</div><div class="lbl">Replied</div></div>
+  <div class="card"><div class="num">{{ metrics.reply_rate }}%</div><div class="lbl">Reply rate</div></div>
+  <div class="card"><div class="num">{{ metrics.test_drives }}</div><div class="lbl">Test drives</div></div>
+  <div class="card"><div class="num">{{ metrics.handoffs }}</div><div class="lbl">Needs human</div></div>
+  <div class="card"><div class="num">{{ metrics.feedback }}</div><div class="lbl">Feedback</div></div>
+  <div class="card"><div class="num">{{ metrics.opted_out }}</div><div class="lbl">Opted out</div></div>
+</div>
+
+<h2>Funnel</h2>
+<div class="panel">
+  {% for status, count in funnel %}
+  <div class="funnel-row">
+    <span class="badge s-{{ status.value }}">{{ status.value.replace('_', ' ') }}</span>
+    <div class="bar"><span style="width: {{ (100 * count / metrics.total) if metrics.total else 0 }}%"></span></div>
+    <span class="muted">{{ count }}</span>
+  </div>
+  {% endfor %}
+</div>
+
+<h2>Needs human ({{ needs_human|length }})</h2>
+{% if needs_human %}
+<table>
+  <tr><th>Lead</th><th>Model</th><th>Open question</th><th></th></tr>
+  {% for lead in needs_human %}
+  <tr>
+    <td><a href="/dashboard/leads/{{ lead.id }}">{{ lead.name }}</a><br><span class="muted">{{ lead.phone }}</span></td>
+    <td>{{ lead.interested_model or "—" }}</td>
+    <td>{{ lead.open_question or "—" }}</td>
+    <td><a href="/dashboard/leads/{{ lead.id }}">Open →</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class="muted">Nothing waiting on a human right now. 🎉</p>
+{% endif %}
+
+<h2>Recent leads</h2>
+<table>
+  <tr><th>Name</th><th>Phone</th><th>Model</th><th>Lang</th><th>Status</th><th>Visited</th></tr>
+  {% for lead in recent %}
+  <tr>
+    <td><a href="/dashboard/leads/{{ lead.id }}">{{ lead.name }}</a></td>
+    <td class="muted">{{ lead.phone }}</td>
+    <td>{{ lead.interested_model or "—" }}</td>
+    <td class="muted">{{ lead.preferred_language.value }}</td>
+    <td><span class="badge s-{{ lead.status.value }}">{{ lead.status.value.replace('_', ' ') }}</span></td>
+    <td class="muted">{{ lead.visit_date or "—" }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
