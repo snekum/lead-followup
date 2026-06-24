@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set lead = d.lead %}
+{% block title %}Chat · {{ lead.name }} · Saarthi{% endblock %}
+{% block content %}
+<p><a href="/simulator">← All chats</a> &nbsp;·&nbsp; <a href="/dashboard/leads/{{ lead.id }}">View in dashboard →</a></p>
+<h1>{{ lead.name }}
+  <span class="badge s-{{ lead.status.value }}">{{ lead.status.value.replace('_', ' ') }}</span>
+</h1>
+<p class="muted">You are messaging as the <strong>customer</strong>. The assistant replies automatically.</p>
+
+<div class="panel chat">
+  {% for m in d.messages %}
+  <div class="bubble {{ 'in' if m.direction.value == 'inbound' else 'out' }}">
+    {{ m.body }}
+    <div class="meta">{{ m.kind.value }} · {{ m.created_at.strftime('%d %b %H:%M') if m.created_at else "" }}</div>
+  </div>
+  {% else %}
+  <p class="muted">No messages yet — say hello below.</p>
+  {% endfor %}
+</div>
+
+<form method="post" action="/simulator/{{ lead.id }}/send" style="margin-top:14px; display:flex; gap:10px;">
+  <input name="text" placeholder="Type a message as the customer…" autofocus required
+         style="flex:1; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font:inherit;">
+  <button class="btn primary" type="submit">Send</button>
+</form>
+{% endblock %}

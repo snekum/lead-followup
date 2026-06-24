@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Simulator · Saarthi{% endblock %}
+{% block content %}
+<h1>WhatsApp simulator</h1>
+<p class="muted">
+  Pick a lead and chat as the customer — the assistant replies just like it would
+  on real WhatsApp (using the mock provider, so nothing is actually sent).
+</p>
+<table>
+  <tr><th>Name</th><th>Phone</th><th>Model</th><th>Status</th><th></th></tr>
+  {% for lead in leads %}
+  <tr>
+    <td>{{ lead.name }}</td>
+    <td class="muted">{{ lead.phone }}</td>
+    <td>{{ lead.interested_model or "—" }}</td>
+    <td><span class="badge s-{{ lead.status.value }}">{{ lead.status.value.replace('_', ' ') }}</span></td>
+    <td><a href="/simulator/{{ lead.id }}">Open chat →</a></td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">No leads yet — import some or run <code>make demo</code>.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

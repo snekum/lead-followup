@@ -38,3 +38,8 @@ revision:     ## Autogenerate a migration: make revision m="add leads"
 
 seed:         ## Seed locations, staff, and sample leads (run after migrate)
 	python -m app.seed
+
+demo:         ## Migrate + seed + run the offline end-to-end demo (no credentials)
+	alembic upgrade head
+	python -m app.seed
+	python -m app.demo

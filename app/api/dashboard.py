@@ -1,28 +1,21 @@
 """Server-rendered manager dashboard + handoff actions."""
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-from app.config import get_settings
 from app.db.models import Event, Lead
 from app.db.session import get_db
 from app.domain.enums import LeadStatus
 from app.domain.lead_state import InvalidTransition
 from app.services import dashboard as dash
 from app.services.leads import change_status
+from app.templating import templates as _templates
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
-
-_templates = Jinja2Templates(
-    directory=str(Path(__file__).resolve().parent.parent.parent / "templates")
-)
-_templates.env.globals["dealership"] = get_settings().dealership_name
 
 
 @router.get("", response_class=HTMLResponse)
