@@ -65,9 +65,9 @@ design decisions / trade-offs.
 
 ## Tech stack
 
-FastAPI · PostgreSQL (SQLAlchemy 2 + Alembic) · Celery + Redis · Anthropic Claude
-(`claude-haiku-4-5`, configurable) · Jinja server-rendered UI · Docker Compose ·
-GitHub Actions (ruff + mypy + pytest).
+FastAPI · PostgreSQL (SQLAlchemy 2 + Alembic) · Celery + Redis · Google Gemini
+(`gemini-2.5-flash`, configurable; Claude also supported) · Jinja server-rendered
+UI · Docker Compose · GitHub Actions (ruff + mypy + pytest).
 
 ## Quickstart
 
@@ -96,10 +96,11 @@ Everything defaults to the **mock** WhatsApp provider and works offline. For the
 real pilot, set in `.env` (see `.env.example`):
 
 - `WHATSAPP_PROVIDER=meta` + `META_*` (token, phone number id, verify token, app secret)
-- `ANTHROPIC_API_KEY` (the assistant uses `claude-haiku-4-5` by default)
+- `GOOGLE_API_KEY` — the assistant uses `gemini-2.5-flash` by default. (Prefer
+  Claude? Set `LLM_PROVIDER=claude` + `ANTHROPIC_API_KEY`.)
 
-Without an `ANTHROPIC_API_KEY` the assistant degrades gracefully — every inbound
-is escalated to a human with a safe reply, so nothing breaks.
+Without an LLM key the assistant degrades gracefully — every inbound is escalated
+to a human with a safe reply, so nothing breaks.
 
 ## How the AI stays safe
 
@@ -129,7 +130,7 @@ app/
   api/         routers: leads, webhook, dashboard, simulator, health
   assistant/   agent loop, prompts, tools, pre-send guardrail
   domain/      enums + Lead lifecycle state machine
-  providers/   whatsapp/{meta,mock}, llm/{claude,fake}
+  providers/   whatsapp/{meta,mock}, llm/{gemini,claude,fake}
   services/    intake, leads, cadence, inbound, messages, dashboard, templates
   db/          models + Alembic migrations
   demo.py      offline end-to-end scenario

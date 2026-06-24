@@ -6,10 +6,16 @@ from app.providers.llm.base import LLMClient
 
 
 def get_llm_client() -> LLMClient:
-    if get_settings().llm_provider == "fake":
+    provider = get_settings().llm_provider
+    if provider == "fake":
         from app.providers.llm.fake import FakeLLMClient
 
         return FakeLLMClient()
-    from app.providers.llm.claude import ClaudeClient
+    if provider == "claude":
+        from app.providers.llm.claude import ClaudeClient
 
-    return ClaudeClient()
+        return ClaudeClient()
+    # default: Gemini
+    from app.providers.llm.gemini import GeminiClient
+
+    return GeminiClient()

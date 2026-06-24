@@ -15,8 +15,8 @@ setup and feature overview see [README.md](README.md).
 | Data | `app/db/` | SQLAlchemy models + Alembic migrations |
 | Jobs | `app/celery_app.py`, `app/tasks.py` | Celery worker + beat for the cadence sweep |
 
-Everything external is a **port with two adapters** — a real one and an offline
-one (`MetaCloudProvider`/`MockWhatsAppProvider`, `ClaudeClient`/`FakeLLMClient`).
+Everything external is a **port with adapters** — real ones and an offline one
+(`MetaCloudProvider`/`MockWhatsAppProvider`, and `GeminiClient`/`ClaudeClient`/`FakeLLMClient`).
 The core never imports a vendor SDK directly; it depends on the interface. That's
 what makes the system clone-and-run and fully testable without credentials.
 
@@ -46,7 +46,7 @@ Meta webhook (POST) ─▶ verify HMAC signature ─▶ for each message:
     handle_inbound(): persist inbound, detect opt-out, STOP the cadence, mark ENGAGED
     respond_to_inbound():
         build context = recent transcript (+ open_question carried forward)
-        run_agent(): Claude tool loop ─ search FAQ / request_test_drive /
+        run_agent(): LLM tool loop (Gemini default) ─ search FAQ / request_test_drive /
                      record_feedback / escalate_to_sales / opt_out
         guardrail_check(reply): block prices/EMI/% ─▶ escalate + safe fallback
         provider.send_text(reply) → log Message

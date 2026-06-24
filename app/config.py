@@ -35,10 +35,12 @@ class Settings(BaseSettings):
     meta_app_secret: str = ""
 
     # Assistant / LLM
-    # llm_provider: "claude" (real API) | "fake" (offline, for tests/demos)
-    llm_provider: str = "claude"
+    # llm_provider: "gemini" (default) | "claude" | "fake" (offline, tests/demos)
+    llm_provider: str = "gemini"
+    google_api_key: str = ""
+    gemini_model: str = "gemini-2.5-flash"  # fast/cheap; swap to a pro / 3.x model anytime
     anthropic_api_key: str = ""
-    anthropic_model: str = "claude-haiku-4-5"  # cheap; swap to claude-opus-4-8 anytime
+    anthropic_model: str = "claude-haiku-4-5"
     assistant_enabled: bool = True
     assistant_max_tokens: int = 512
     assistant_max_turns: int = 4
