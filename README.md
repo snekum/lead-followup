@@ -22,7 +22,7 @@ production-shaped reference for an agentic LLM product.
 - **Follow-up cadence** — a Celery-scheduled nudge sequence (Day 0/2/5/9) that
   respects **quiet hours**, **stops the moment a customer replies**, and honors
   **opt-out** — sending Meta-approved templates in **English, Hindi, or Telugu**.
-- **AI assistant** — a single tool-constrained **Claude** agent answers from an
+- **AI assistant** — a single tool-constrained **Gemini** agent answers from an
   approved FAQ, captures interest and visit feedback, takes test-drive requests,
   and **escalates** price/finance/availability questions to a human.
 - **Safety guardrail** — a deterministic check blocks any reply containing a
@@ -45,7 +45,7 @@ production-shaped reference for an agentic LLM product.
                                           ┌────────────────────────┘
                                           ▼
                             intent (opt-out / reply) ──▶ tool-constrained assistant
-                                                          (Claude │ Fake LLM)
+                                                          (Gemini │ Fake LLM)
                                           ┌───────────────┼───────────────┐
                                      search FAQ      request_test_drive   escalate_to_sales
                                    (system prompt)   record_feedback      opt_out
@@ -58,7 +58,7 @@ production-shaped reference for an agentic LLM product.
 
 Vendors live behind **ports** (`app/providers/whatsapp`, `app/providers/llm`),
 each with a real and an offline implementation — so the whole system runs and is
-tested with **no credentials**, and the pilot swaps in real Meta/Claude via config.
+tested with **no credentials**, and the pilot swaps in real Meta/Gemini via config.
 
 See **[ARCHITECTURE.md](ARCHITECTURE.md)** for flows, the data model, and the
 design decisions / trade-offs.

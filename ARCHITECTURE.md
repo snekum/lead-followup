@@ -94,7 +94,7 @@ rather than a crash.
   uses approved **templates**; free-form replies only happen inside the open 24h
   window (i.e., right after an inbound). Quiet hours, opt-out, and stop-on-reply
   are enforced at send time.
-- **Ports over vendors.** Swapping Meta↔mock or Claude↔fake is a config change;
+- **Ports over vendors.** Swapping Meta↔mock or Gemini↔fake is a config change;
   tests and the offline demo use the mocks.
 
 ## Testing strategy
